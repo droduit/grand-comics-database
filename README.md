@@ -1,1 +1,1 @@
-# database-project
+# Grand Comics Database

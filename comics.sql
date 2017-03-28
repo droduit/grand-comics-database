@@ -373,7 +373,7 @@ CREATE TABLE IF NOT EXISTS `participate` (
   `id` INT NOT NULL,
   `person_id` INT NOT NULL,
   `story_id` INT NOT NULL,
-  `role` ENUM('script', 'pencil', 'ink', 'color', 'letter') NOT NULL,
+  `role` ENUM('script', 'pencil', 'ink', 'color', 'letter', 'editing') NOT NULL,
   `note` TEXT NULL,
   PRIMARY KEY (`id`),
   INDEX `person_person_id_idx` (`person_id` ASC),
@@ -389,9 +389,9 @@ CREATE TABLE IF NOT EXISTS `participate` (
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `edit_issue`
+-- Table `editing`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `edit_issue` (
+CREATE TABLE IF NOT EXISTS `editing` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `person_id` INT NOT NULL,
   `issue_id` INT NOT NULL,
@@ -406,26 +406,5 @@ CREATE TABLE IF NOT EXISTS `edit_issue` (
   CONSTRAINT `issue_issue_id`
     FOREIGN KEY (`issue_id`)
     REFERENCES `issue` (`id`)
-    ON DELETE CASCADE)
-ENGINE = InnoDB;
-
--- -----------------------------------------------------
--- Table `edit_story`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `edit_story` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `person_id` INT NOT NULL,
-  `story_id` INT NOT NULL,
-  `note` TEXT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `person_person_id_idx` (`person_id` ASC),
-  INDEX `story_story_id_idx` (`story_id` ASC),
-  CONSTRAINT `person_person_id`
-    FOREIGN KEY (`person_id`)
-    REFERENCES `person` (`id`)
-    ON DELETE CASCADE,
-  CONSTRAINT `story_story_id`
-    FOREIGN KEY (`story_id`)
-    REFERENCES `story` (`id`)
     ON DELETE CASCADE)
 ENGINE = InnoDB;

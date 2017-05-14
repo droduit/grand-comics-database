@@ -21,7 +21,7 @@ $db = ($_SERVER['HTTP_HOST']=="localhost") ?
 
 		
 $csv = "comics/".$file."/".$_GET['chunk'];
-$table = "issue_orig"; //$file;
+$table = $file;
 $filename = $csv;
 $handle = fopen($filename, "r");
 
@@ -29,11 +29,11 @@ $row = 0;
 $rows = array();
 
 if($file == "story") {
-	$colToDiscard = array(2, 10, 11); //array(2, 4, 5, 6, 7, 8, 9, 10, 11);
+	$colToDiscard = array(2, 4, 5, 6, 7, 8, 9, 10, 11);
 } else if($file == "series") {
 	$colToDiscard = array(3,4,5);	
 } else if($file == "issue") {
-	$colToDiscard = array(); //array(8);
+	$colToDiscard = array(5,8);
 } else {
 	$colToDiscard = array();
 }
@@ -97,12 +97,3 @@ $db->exec(substr($line, 0, -2));
 
 }
 ?>
-
-
-
-SELECT ind.id as ind_id, p.id as pub_id, count(p.id) as num FROM indicia_publisher as ind  
-LEFT JOIN publisher as p ON ind.publisher_id = p.id
-WHERE ind.country_id = (SELECT id FROM country WHERE name = 'Belgium')
-GROUP BY p.id
-INSERT INTO character (story_id, hero_id) 
-SELECT so.id as story_id, h.id as hero_id FROM `story_orig` so LEFT JOIN hero as h ON h.name = so.characterr

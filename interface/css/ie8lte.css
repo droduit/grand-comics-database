@@ -1,0 +1,12 @@
+#ie-obsolete {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	background: #FF6655;
+	padding: 15px;	
+	color: white;
+	filter: alpha(opacity=80);
+}
+header {
+	display: none;	
+}

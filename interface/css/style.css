@@ -500,8 +500,8 @@ aside #aside-logo {
   opacity:1;
   width:100%;
   height:70px;
-  margin-top: 75px;
-  margin-bottom: 80px;
+  margin-top: 85px;
+  margin-bottom: 90px;
   -webkit-transition:opacity .2s;
   -moz-transition:opacity .2s;
   -ms-transition:opacity .2s;
@@ -512,8 +512,8 @@ aside #aside-logo:hover { opacity:.8; }
 aside #aside-logo:active { opacity:.6; }
 aside #aside-logo img {
   display:block;
-  width:152px;
-  height:69px;
+  width:164px;
+  height:62px;
   margin:auto;
 }
 aside #aside-nav ul li {

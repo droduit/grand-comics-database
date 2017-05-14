@@ -1,40 +1,27 @@
 <?php
 session_start();
 require_once('class/db.class.php');
+require_once('class/common.php');
 
 $db = ($_SERVER['HTTP_HOST']=="localhost") ?
 		new db('localhost', 'comics', 'root', '') : new db();
 
-
 $nav = array(
-	'home' => array('Accueil', 'home.php'),
-	'page-1' => array('Page 1', 'page-1.php', array(
-		'page-1~suite1' => array("sous page 1", 'sous-page-1.php'),
-		'page-2~suite2' => array("sous page 2", 'sous-page-2.php')
-	)),
-	'page-2' => array('Page 2', 'page-2.php')
+	'search' => array('Search', 'search.php'),
+	'predef-queries' => array('Predefined Queries', 'predef-queries.php'),
+	'insert-delete' => array('Insert & Delete', 'insert-delete.php')
 );
 
-$page = (isset($_GET['p'])) ? $_GET['p'] : "home";
+$page = (isset($_GET['p'])) ? $_GET['p'] : "search";
 $page = str_replace('~', "/", $page);
-$page = (@file_exists('inc/'.$page.'.php')) ? $page : "home";
+$page = (@file_exists('inc/'.$page.'.php')) ? $page : "search";
 $page = str_replace('/', "~", $page);
 ?>
 <!DOCTYPE html>
 <html>
 	<head>
 		<!-- meta -->
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-		
-		<?php if($_SESSION['MOBILE']) { ?>
-			<meta name="viewport" content="width=device-width,user-scalable=0">
-			<meta name="apple-mobile-web-app-capable" content="yes">
-			<meta name="apple-mobile-web-app-status-bar-style" content="black">
-			<?php if(!$_SESSION['IPAD']) { ?>
-				<meta content="width=device-width,   user-scalable=0;" name="viewport" />
-			<?php } ?>
-		<?php } ?>
-		
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">		
 		<meta http-equiv="description" content="<?php echo $_SESSION['PARAM_DESCRIPTION']; ?>" />
 		<meta http-equiv="keywords" content="<?php echo $_SESSION['META_KEYWORDS']; ?>" />
 
@@ -44,7 +31,6 @@ $page = str_replace('/', "~", $page);
 		<link href="img/favicon.png" type="image/png" rel="icon">
 		<link rel="stylesheet" id="contact-form-7-css" href="css/styles.css" type="text/css" media="all">
 		<link rel="stylesheet" id="googlewebfonts-css" href="css/css.css" type="text/css" media="all">
-		<link rel="stylesheet" id="prettyphoto-css" href="css/prettyPhoto.css" type="text/css" media="all">
 		<link rel="stylesheet" id="style-css" href="css/style.css" type="text/css" media="all">
 		<link rel="stylesheet" href="css/smoothness/jquery-ui-1.10.3.custom.min.css" type="text/css" media="all">
 		<link rel="stylesheet" href="css/tipsy.css" type="text/css" media="all">
@@ -52,10 +38,9 @@ $page = str_replace('/', "~", $page);
 	   
 		<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
 		<script type="text/javascript" src="js/jquery.tipsy.js"></script>
-		<script type="text/javascript" src="js/jquery.prettyPhoto.js"></script>
 		<script type="text/javascript" src="js/jquery-ui-1.10.3.custom.min.js"></script>
 		<script type="text/javascript" src="js/jquery.common.js"></script>
-		<?php if(!isset($_GET['p']) || !$_SESSION['MOBILE']) { ?>
+		<?php if(!isset($_GET['p'])) { ?>
 		<script type="text/javascript" src="js/jquery-animate-css-rotate-scale.js"></script>
 		<?php } ?>
 		
@@ -69,8 +54,50 @@ $page = str_replace('/', "~", $page);
 <body>
 <div id="wrapper">
     <div id="background">
-    	
-       
+    	<?php
+    	$MyDirectory = (file_exists('img/bg/'.$page."/")) ? opendir('img/bg/'.$page."/") : false;
+		
+		$bgList = array();
+		
+		if($MyDirectory!=false) {
+			while($Entry = @readdir($MyDirectory)) {
+				if($Entry != '.' && $Entry != '..' && substr($Entry, 0,2)!="x_") {
+					$bgList[] = $page."/".$Entry;
+				} 
+			}
+		} else {
+			$bgList[] = "default.jpg"; 
+        }
+
+		
+		$idxEntry = 0;
+		foreach($bgList as $bg) { $idxEntry++; ?>
+       		<div style="
+           	<?php if($idxEntry>1) {?>display: none;<?php } ?>
+            opacity: 1;
+            background-image: url('img/bg/<?php echo $bg; ?>');
+            -ms-filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,src='img/bg/<?php echo $bg; ?>', sizingMethod='scale');
+  			filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,src='img/bg/<?php echo $bg; ?>', sizingMethod='scale');
+            z-index: -<?php echo (9+$idxEntry); ?>;" class="background-image" <?php if($idxEntry==1) {?>current="1"<?php } ?>></div>
+        <?php	
+		}
+		?>
+        
+        <?php
+		$patternAllowed = array("search", "history", "sejours-linguistiques","cours-appui");
+		if(in_array($page, $patternAllowed)) {?>
+        <div id="background-pattern"></div>
+        <?php } ?>
+        
+        <?php if(!isset($_GET['p'])) { ?>
+        <div style="
+        opacity: 1;
+        background-image: url('img/bg/loader-bg.jpg');
+        -ms-filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,src='img/bg/outer_space_Wallpaper.jpg', sizingMethod='scale');
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,src='img/bg/outer_space_Wallpaper.jpg', sizingMethod='scale');
+        z-index: -8;" class="background-image init"></div>
+        <?php } ?>
+        
         <div id="background-overlay" style="background-color:transparent; opacity:0"></div>
         
         <div style="display: block; opacity: 0; bottom: 462.05px; transform: matrix3d(0.9, 0, 0, 0, 0, -0.9, 0, 0, 0, 0, -0.9, 0, 0, 0, 0, 1); display:none" id="background-loader">
@@ -83,7 +110,7 @@ $page = str_replace('/', "~", $page);
 	
     <header>
         <a id="header-logo" href="?p=home">
-            <img alt="Visa-Centre" src="img/logo.png">
+            <img alt="ComicsDB" src="img/logo.png">
         </a>
     
         <div id="header-select">
@@ -113,14 +140,13 @@ $page = str_replace('/', "~", $page);
 
     <aside>
         <a data-climb-history-set="true" href="#" id="aside-logo">
-            <!-- <img src="img/logodb.png" alt=""> -->
+            <img src="img/logo.png" alt="">
         </a>
     
         <div id="aside-nav">
             <nav class="menu-demo-menu-container">
                 <ul id="menu-demo-menu" class="menu">
                 <?php
-				/*
                 foreach($nav as $nItem => $n) {
                     ?>
                     <li id="menu-item-49" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-49 <?php if($page==$nItem) { echo 'nav-sel'; } ?>">
@@ -141,16 +167,6 @@ $page = str_replace('/', "~", $page);
                     </li>
                     <?php
                 }
-				*/
-				$files = array_diff(scandir("./comics"), array('.', '..'));
-				foreach($files as $f) {
-					if(strstr($f, ".csv") > -1) {?>
-					<li id="menu-item-49" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-49 <?php if($page==$nItem) { echo 'nav-sel'; } ?>">
-                        <a href="chunker.php?p=<?php echo $f; ?>"><?php echo $f; ?></a>
-					</li>
-				<?php 
-					}
-				}
                 ?>
                 </ul>
             </nav>
@@ -161,10 +177,8 @@ $page = str_replace('/', "~", $page);
 
     <div id="content">
     <?php
-	/*
 	$page = str_replace('~', "/", $page);
 	include_once('inc/'.$page.".php");
-	*/
 	?>
     
     <!--[if lte IE 8]>

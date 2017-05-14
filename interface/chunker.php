@@ -5,7 +5,7 @@ $handle = fopen($filename_in, "r");
 
 $errors = array();
 $row = 0;
-$i = 38;
+$i = 0;
 
 $fp_chunk = fopen(getFilenameOut($csv, $i), "w+"); 
 
@@ -22,7 +22,7 @@ while( ($data = fgetcsv($handle, 0, ",")) != false ) {
 	fputcsv($fp_chunk, $data);
 	
 	$row++;
-	if($row == 50000) {
+	if($row == 100000) {
 		$row = 0;
 		fclose($fp_chunk);
 		$i++;

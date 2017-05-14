@@ -77,3 +77,102 @@ div.wpcf7 .placeheld {
 .info .padding {
 	padding: 25px;
 }
+
+
+
+input[type="text"], input[type="search"], input[type="date"],
+input[type="tel"], textarea, select {
+	width: 100%;
+	border-radius: 6px;
+	border: 1px solid #dedede;
+	padding: 4px 6px;	
+	box-sizing : border-box;
+}
+textarea {
+	font-family: 'Arimo',sans-serif;	
+	font-size: 13px;
+	resize: vertical;
+	max-height: 150px;
+	min-height: 30px;
+	height: 40px;
+	width: 100%;
+}
+input[type="button"], input[type="submit"] {
+	width:100%;
+	border-radius: 8px;
+	padding: 5px;
+	margin-top: 8px;	
+	cursor: pointer;
+
+	background-image: linear-gradient(bottom, #E0DDE0 33%, #F5F5F5 67%);
+	background-image: -o-linear-gradient(bottom, #E0DDE0 33%, #F5F5F5 67%);
+	background-image: -moz-linear-gradient(bottom, #E0DDE0 33%, #F5F5F5 67%);
+	background-image: -webkit-linear-gradient(bottom, #E0DDE0 33%, #F5F5F5 67%);
+	background-image: -ms-linear-gradient(bottom, #E0DDE0 33%, #F5F5F5 67%);
+	
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.33, #E0DDE0),
+		color-stop(0.67, #F5F5F5)
+	);
+	border: 1px solid #bbb;
+	transition: all 0.1s linear;
+}
+input[type="button"]:hover, input[type="submit"]:hover {
+	transform: scale(1.03);
+}
+fieldset {
+	border-radius: 8px;
+	border: 1px solid #999;
+}
+fieldset legend {
+	text-align: center;
+	padding: 2px 12px;
+	border-radius: 8px;
+	background-image: linear-gradient(bottom, #E0DDE0 33%, #F5F5F5 67%);
+	background-image: -o-linear-gradient(bottom, #E0DDE0 33%, #F5F5F5 67%);
+	background-image: -moz-linear-gradient(bottom, #E0DDE0 33%, #F5F5F5 67%);
+	background-image: -webkit-linear-gradient(bottom, #E0DDE0 33%, #F5F5F5 67%);
+	background-image: -ms-linear-gradient(bottom, #E0DDE0 33%, #F5F5F5 67%);
+	
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.33, #E0DDE0),
+		color-stop(0.67, #F5F5F5)
+	);
+	border: 1px solid #bbb;
+}
+.option {
+	padding: 2px;
+	padding-left: 8px;
+}
+.option:hover { background: rgba(255,255,255,0.3); }
+
+
+.last-results {
+	border-radius: 8px;
+	border-left: 1px solid #bbb;
+}
+
+.last-results tr td {
+	border-bottom: 1px solid #bbb;
+	border-right: 1px solid #bbb;
+	padding: 4px;
+}
+
+.last-results tr th {
+	background: #bbb;
+	color: black;
+}
+
+
+@media screen and (max-width: 769px) {
+	p {
+		line-height: 1em;
+		margin-bottom: 40px	
+	}
+}

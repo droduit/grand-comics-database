@@ -8,7 +8,6 @@ $limit = 5;
 
 if(isset($_POST['table'])) {
 	require_once('../class/db.class.php');
-	require_once('../class/common.php');
 
 	$db = ($_SERVER['HTTP_HOST']=="localhost") ?
 			new db('localhost', 'comics', 'root', '') : new db();
@@ -38,6 +37,7 @@ if(isset($_POST['table'])) {
 		
 		echo '<tr>';
 		foreach($cols as $c) { echo '<th>'.$c.'</th>'; }
+		echo '<th></th>';
 		echo '</tr>';
 		
 		$i = 0;
@@ -50,6 +50,7 @@ if(isset($_POST['table'])) {
 				
 				echo '<td>'.str_replace($key, '<span class="highlight">'.$key.'</span>', $text)."</td>";
 			}
+			echo '<td align="center" width="24px"><img class="delete" src="img/delete.png" table="'.$table.'" idx="'.$row['id'].'" /></td>';
 			echo '</tr>';
 			
 			if($i == $limit && !isset($_POST['showAll'])) break;

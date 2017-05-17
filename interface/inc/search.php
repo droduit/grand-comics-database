@@ -1,3 +1,4 @@
+
 <section class="page-width-70 boxed-style intro" id="page">
 	<div class="page type-page status-publish hentry page-content text-format">
     	<div class="in" id="page-title" style="padding-bottom: 30px">
@@ -7,7 +8,7 @@
         
         <div class="in" id="page-content">
 		
-			<div class="advanced-options" style="display:none; margin-bottom: 10px;">
+			<div class="advanced-options" style="<?php if(!isset($_GET['table'])) { ?>display:none;<?php }?> margin-bottom: 10px;">
 				<form action="#">
 				  <fieldset>
 					<legend align="center">Tables to search</legend>
@@ -16,17 +17,19 @@
 					$toAvoid = array("character", "editing", "feature", "issue_reprint", "participate", "story_genre", "story_reprint", "issue_orig", "story_orig");
 					foreach($db->query("SHOW TABLES") as $row) {
 						
-						if(!in_array($row[0], $toAvoid)) {?>
-						<div class="option">
-						<input 	type="checkbox"
-								checked="checked"
-								id="<?php echo $row[0]; ?>"
-								name="<?php echo $row[0]; ?>"
-								value="<?php echo $row[0]; ?>">
-						<label for="<?php echo $row[0]; ?>"><?php echo $row[0]; ?></label>
-						</div>
-				
-						<?php 
+						if(!in_array($row[0], $toAvoid)) {
+							if(!isset($_GET['table']) || (isset($_GET['table']) && $row[0] == $_GET['table'])) {?>
+								<div class="option">
+								<input 	type="checkbox"
+										checked="checked"
+										id="<?php echo $row[0]; ?>"
+										name="<?php echo $row[0]; ?>"
+										value="<?php echo $row[0]; ?>">
+								<label for="<?php echo $row[0]; ?>"><?php echo $row[0]; ?></label>
+								</div>
+						
+								<?php 
+							}
 						}
 					} ?>
 				  </fieldset>
@@ -36,7 +39,7 @@
 			<div style="">
 				<form action="#" method="post" class="searchable">
 					<input id="search" name="search" placeholder="Type here to search..." type="search" style="text-align: center; font-size: 20px;">
-					<input value="Show advanced options" type="button" id="show-advanced">
+					<?php if(!isset($_GET['table'])) { ?><input value="Show advanced options" type="button" id="show-advanced"><?php } ?>
 				</form>
 				
 				<div style="display:none; position: relative; width: 100%; height: 18px; border: 1px solid #bbb; border-radius: 9px; margin-top: 10px" class="progressbar">
@@ -67,6 +70,10 @@
 <div id="fullwin" style="display:none">
 	<div class="toolbar">Close</div>
 	<div class="content"></div>
+</div>
+
+<div id="dialog-confirm" title="Delete this record ?">
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This item will be permanently deleted and cannot be recovered. Are you sure?</p>
 </div>
 
 <script>
@@ -142,6 +149,33 @@ $(function(){
 		$('#fullwin .content').html("");
 	});
 	
+	$( "#dialog-confirm" ).dialog({
+	  autoOpen: false,
+      resizable: false,
+      height: "auto",
+      width: 400,
+      modal: true,
+      buttons: {
+        "Delete": function() {
+          $( this ).dialog( "close" );
+		  var row = $(".delete[slct=on]").parent('td').parent('tr');
+			var t = $(".delete[slct=on]").attr("table");
+			var i = $(".delete[slct=on]").attr("idx");
+			$.post('inc/delete.php', { table : t, id : i }, function(html){
+				row.hide("explode", "medium");
+				setTimeout(function(){ row.remove(); }, 500);
+			});
+        },
+        Cancel: function() {
+          $( this ).dialog( "close" );
+        }
+      }
+    });
+	
+	$('.delete').live('click', function(){
+		$(this).attr("slct","on");
+		$( "#dialog-confirm" ).dialog( "open" );
+	});
 });
 
 function getActiveTables() {
@@ -195,7 +229,7 @@ function execSearch() {
 }
 .table-res table td, .table-res table th {
 	border-right: 1px solid rgba(0, 34, 51, 0.08);
-	padding: 2px;
+	padding: 2px 6px;
 }
 .table-res table td:last-child, .table-res table th:last-child {
 	border-right: none;
@@ -255,6 +289,13 @@ span.highlight {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b8e1fc', endColorstr='#bdf3fd',GradientType=0 ); /* IE6-9 */
 
 	position:  absolute; top: 0; left: 0; z-index: 0; height: 100%; border-radius: 9px; width: 0%
+}
+.delete {
+	transition: all 0.1s linear;
+	cursor: pointer;
+}
+.delete:hover {
+	opacity: 0.8;
 }
 </style>
 

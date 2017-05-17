@@ -19,10 +19,12 @@ class Table {
 	}
 	
 	function displayTable() { 
-		$cont = '<div style="overflow-x: auto">';
-		$cont.= '<table class="last-results" style="border-collapse: collapse" width="100%">';
+		$cont = '<div align="center" style="font-weight:bold; font-size: 15px; margin-bottom: 5px">The 5 last records</div>';
+		$cont.= '<div style="overflow-x: auto">';
+		$cont.= '<table class="last-results" style="border-collapse: collapse;" width="100%">';
 		$cont.= '<tr>';
 		foreach($this->colNames as $c) { $cont.= '<th>'.$c.'</th>'; }
+		$cont.= '<th></th>';
 		$cont.= '</tr>';
 			
 		foreach($this->db->query("SELECT * FROM ".$this->tablename." ORDER BY id DESC LIMIT 5") as $row) {
@@ -30,8 +32,10 @@ class Table {
 			foreach($this->colNames as $c) {
 				$cont.= '<td>'.mb_strimwidth($row[$c], 0, 80, "...").'</td>';
 			}
+			$cont.= '<td align="center" width="24px"><img class="delete" src="img/delete.png" table="'.$this->tablename.'" idx="'.$row['id'].'" /></td>';
 			$cont.= '</tr>';
 		}
+		$cont.= '<tr><td colspan="'.(count($this->colNames)+1).'"><a href="?p=search&table='.$this->tablename.'"><div class="search-del">Search record to delete in this table</div></a></td></tr>';
 		$cont.= '</table>';
 		$cont.= '</div>';
 		echo $cont;

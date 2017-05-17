@@ -51,13 +51,20 @@ if($slct_table < 0 || $slct_table >= count($tbl_lst) || !is_numeric($slct_table)
 			
 			<br>
 			
+			<div style="padding: 6px 10px; border: 1px solid #ccc; border-radius: 8px; background: white">
 			<?php
 			if(count($_POST) > 1) { $oTable->insert($_POST); }
 			$oTable->displayTable();
 			?>
+			</div>
 		</div>
     </div>
 </section>
+
+<div id="dialog-confirm" title="Delete this record ?">
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>This item will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+
 
 <script>
 $(function(){
@@ -74,6 +81,34 @@ $(function(){
 	$('.table-entry.slct').click(function(){
 		$('.table-select').slideUp("fast");
 		$('.table-select-trigger').slideDown("fast");
+	});
+	
+	$( "#dialog-confirm" ).dialog({
+	  autoOpen: false,
+      resizable: false,
+      height: "auto",
+      width: 400,
+      modal: true,
+      buttons: {
+        "Delete": function() {
+          $( this ).dialog( "close" );
+		  var row = $(".delete[slct=on]").parent('td').parent('tr');
+			var t = $(".delete[slct=on]").attr("table");
+			var i = $(".delete[slct=on]").attr("idx");
+			$.post('inc/delete.php', { table : t, id : i }, function(html){
+				row.hide("explode", "medium");
+				setTimeout(function(){ row.remove(); }, 500);
+			});
+        },
+        Cancel: function() {
+          $( this ).dialog( "close" );
+        }
+      }
+    });
+	
+	$('.delete').live('click', function(){
+		$(this).attr("slct","on");
+		$( "#dialog-confirm" ).dialog( "open" );
 	});
 });
 </script>
@@ -130,5 +165,24 @@ $(function(){
 		color-stop(0.33, #E0DDE0),
 		color-stop(0.67, #F5F5F5)
 	);
+}
+.delete {
+	transition: all 0.1s linear;
+	cursor: pointer;
+}
+.delete:hover {
+	opacity: 0.8;
+}
+.search-del {
+	cursor: pointer;
+	background: rgba(0, 34, 51, 0.25);
+	text-align: center;
+	border-radius: 5px;
+	padding: 6px;
+	color: black;
+	transition: all 0.1s linear;
+}
+.search-del:hover {
+	background: rgba(0, 34, 51, 0.35);
 }
 </style>

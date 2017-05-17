@@ -3,7 +3,6 @@ $key = trim($_POST['key']);
 
 if(isset($_POST['key']) && strlen($key) > 0) {
 require_once('../class/db.class.php');
-require_once('../class/common.php');
 
 $db = ($_SERVER['HTTP_HOST']=="localhost") ?
 		new db('localhost', 'comics', 'root', '') : new db();

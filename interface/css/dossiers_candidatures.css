@@ -1,0 +1,89 @@
+body {
+	font-family: 'Open Sans', Helvetica, sans-serif;
+	font-size: 12px;
+	color: black;
+	background: rgb(0,31,54);	
+}
+.dossier {
+	border-radius: 10px;
+	padding: 20px;
+	background: white;
+	width: 850px;
+	margin:auto;
+	margin-top: 30px;	
+}
+h1 {
+	margin-top: 0;	
+	margin-bottom: 0px;
+	background: rgb(0,31,54);
+	padding: 6px 16px;
+	border-radius: 8px;
+	color: white;
+}
+h2 {
+	text-align: right;
+	margin-top: 8px;
+	color: #999;	
+}
+.files {
+	border: 2px solid #ddd;
+	padding: 14px;
+	border-radius: 8px;		
+}
+a {
+	text-decoration: none;	
+}
+.file {
+	padding: 6px 20px;
+	background: #eee;
+	color: black;	
+	border-bottom: 1px solid #ccc;
+	transition: all 0.15s linear;
+}
+.file:hover {
+	background: #ddd;
+	transform: scale(1.01);
+}
+.infos {
+	border: 2px solid #eee;
+	padding: 14px;
+	border-radius: 8px;
+	margin-top: 15px;	
+}
+p {
+	margin:0;
+	padding:0;
+	line-height: 1.5em;	
+}
+.btPrint {
+	border-radius: 8px;
+	background: rgb(0,31,54);
+	color: white;
+	padding: 8px 0 6px;
+	margin-top: 18px;
+	text-align: center;	
+	cursor: pointer;
+}
+.btPrint:hover {
+	background: #39F;	
+}
+.printable p {
+	padding: 6px;	
+	border-bottom: 1px solid #eee;
+	font-size: 14px;
+}
+.printable p b {
+	display: inline-block;
+	width: 180px;	
+}
+
+.back {
+	background: #fefefe;
+	float: left;
+	margin-left: 10px;
+	padding: 6px 8px;
+	border-radius: 6px;	
+}
+a {
+	color: black;	
+}

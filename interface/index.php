@@ -29,17 +29,16 @@ $page = str_replace('/', "~", $page);
 		<title></title>
 		
 		<link href="img/favicon.png" type="image/png" rel="icon">
-		<link rel="stylesheet" id="contact-form-7-css" href="css/styles.css" type="text/css" media="all">
+
 		<link rel="stylesheet" id="googlewebfonts-css" href="css/css.css" type="text/css" media="all">
 		<link rel="stylesheet" id="style-css" href="css/style.css" type="text/css" media="all">
+		<link rel="stylesheet" id="contact-form-7-css" href="css/styles.css" type="text/css" media="all">
 		<link rel="stylesheet" href="css/smoothness/jquery-ui-1.10.3.custom.min.css" type="text/css" media="all">
-		<link rel="stylesheet" href="css/tipsy.css" type="text/css" media="all">
 
 	   
 		<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
 		<script type="text/javascript" src="js/jquery.tipsy.js"></script>
 		<script type="text/javascript" src="js/jquery-ui-1.10.3.custom.min.js"></script>
-		<script type="text/javascript" src="js/jquery.common.js"></script>
 		<?php if(!isset($_GET['p'])) { ?>
 		<script type="text/javascript" src="js/jquery-animate-css-rotate-scale.js"></script>
 		<?php } ?>

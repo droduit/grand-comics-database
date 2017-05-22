@@ -106,6 +106,7 @@ $(function(){
 	
 	<?php } ?>
 	
+	$('#search').focus();
 	
 	// Click sur les options avancées
 	$(".option:not(input[type=checkbox])").click(function(){

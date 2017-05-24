@@ -26,7 +26,7 @@
 						<div class="desc"><?= $q_a[0] ?></div>
 						
 						
-						<input type="<?= (!($k == "o" && $i-1 == 2)) ? "hidden" : "text" ?>" name="parameter" placeholder="Parameter"  />
+						<input type="<?= (!($k == "o" && $i-1 == 2)) ? "hidden" : "text" ?>" value="<?= (!($k == "o" && $i-1 == 2)) ? "" : "1" ?>" name="parameter" placeholder="Parameter"  />
 						
 						
 						<div class="exec">Execute query</div>
@@ -52,8 +52,10 @@ $(function(){
 		var k = parent.attr("key");
 		var p = parent.find('input[name=parameter]').val();
 	
+		if(parent.find('input[name=parameter]').attr("type") != "hidden" && p=="")
+			p = 1;
 		
-		if(parent.attr("executed") == undefined) {
+		if(parent.attr("executed") == undefined || p != "") {
 			parent.find(".res").slideDown("fast");
 			
 			var before = (new Date()).getTime();
@@ -65,8 +67,9 @@ $(function(){
 				var after = (new Date()).getTime();
 				var diff = (after - before) / 1000;
 				
-
-				parent.find(".exec").slideUp("fast");
+				if(p == "") {
+					parent.find(".exec").slideUp("fast");
+				}
 				parent.find(".res").html(html);
 				parent.attr("executed","on");
 				

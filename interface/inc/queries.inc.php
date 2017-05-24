@@ -243,7 +243,14 @@ $q = array(
 		
 		'o' => array(
 			"Given an issue, print its most reprinted story. ",
-			"" // SELECT name FROM country WHERE id=?
+			"SELECT s.title FROM story s
+			LEFT JOIN issue i ON s.issue_id = i.id
+			LEFT JOIN story_reprint sr ON sr.origin_id = s.id
+			WHERE i.id = ? AND s.title IS NOT NULL
+			GROUP BY s.id
+			ORDER BY count(s.id) DESC 
+			LIMIT 1
+			"
 		)
 	)
 );

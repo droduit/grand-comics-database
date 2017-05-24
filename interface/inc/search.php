@@ -14,7 +14,7 @@
 					<legend align="center">Tables to search</legend>
 					
 					<?php
-					$toAvoid = array("character", "editing", "feature", "issue_reprint", "participate", "story_genre", "story_reprint", "issue_orig", "story_orig");
+					$toAvoid = array("characters", "editing", "feature", "issue_reprint", "participate", "story_genre", "story_reprint", "issue_orig", "story_orig");
 					foreach($db->query("SHOW TABLES") as $row) {
 						
 						if(!in_array($row[0], $toAvoid)) {

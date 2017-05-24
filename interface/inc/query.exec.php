@@ -7,14 +7,15 @@ $db = ($_SERVER['HTTP_HOST']=="localhost") ?
 		
 $key = $_POST['key'];
 $array_idx = $_POST['array_idx'];
-
+$param = $_POST['param'];
 
 $query_str = $q[$array_idx-1][$key][1];
 
 if($query_str == "") {
 	echo 'This query doesn\'t exist';
 } else {
-	//echo $query_str;
+	if(strlen($param) > 0) 
+		$query_str = str_replace('?', $param, $query_str);
 	
 	$stmt = $db->query($query_str);
 	$result = $stmt->setFetchMode(PDO::FETCH_NAMED);

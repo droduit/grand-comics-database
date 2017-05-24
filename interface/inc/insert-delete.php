@@ -42,7 +42,8 @@ if($slct_table < 0 || $slct_table >= count($tbl_lst) || !is_numeric($slct_table)
 			
 			<form method="post" action="#" enctype="multipart/form-data">
 				<table width="100%">
-					<?php @include_once($inc); ?>
+					<?= $oTable->displayForm(); ?>
+					<?php //@include_once($inc); ?>
 					<tr><td colspan="2">&nbsp;</td></tr>
 			
 					<tr> <td colspan="2" align="center"><input type="submit" value="Insert" /></td></tr>
@@ -184,5 +185,8 @@ $(function(){
 }
 .search-del:hover {
 	background: rgba(0, 34, 51, 0.35);
+}
+label  {
+	text-transform: capitalize;
 }
 </style>

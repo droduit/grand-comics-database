@@ -5,6 +5,8 @@ class Table {
 	private $tablename;
 	private $colInfos;
 	private $colNames;
+	private $colTypes;
+	private $colLength;
 	
 	function __construct($db, $tablename) {
 		$this->db = $db;
@@ -13,8 +15,13 @@ class Table {
 		$this->colInfos = $this->db->query("SHOW columns FROM ".$this->tablename);
 		
 		$this->colNames = array();
+		$this->colTypes = array();
+		
 		foreach($this->colInfos as $c) {
+			$exploded = explode("(", $c['Type']);
 			$this->colNames[] = $c[0];
+			$this->colTypes[$c[0]] = $exploded[0];
+			$this->colLength[$c[0]] = substr( (count($exploded) > 1) ? $exploded[1] : "", 0, -1);
 		}
 	}
 	
@@ -39,6 +46,54 @@ class Table {
 		$cont.= '</table>';
 		$cont.= '</div>';
 		echo $cont;
+	}
+	
+	function displayForm() {
+		$form = "";
+		foreach($this->colNames as $c) {
+			if($c == 'id') continue;
+			
+			$dataType = $this->colTypes[$c];
+			
+			$label = str_replace('id', 'ID', str_replace('_', ' ', $c));
+			$placeholder = "";
+			
+			if($dataType == "year") {
+				$placeholder = date('Y');
+			} else if($dataType == "date") {
+				$placeholder = date('Y-m-d');
+			} else {
+				$placeholder = $dataType;
+			}
+			
+			$form.= '<tr>'
+					.'<td><label for="'.$c.'">'.$label.'</label></td><td>';
+			
+			$advanced_fields = array('country_id', 'language_id', 'publication_type_id', 'type_id');
+			
+			if(!in_array($c, $advanced_fields)) {
+				switch($dataType) {
+					case "text":
+						$form.= '<textarea id="'.$c.'" name="'.$c.'" placeholder="text"></textarea>';
+					break;
+					
+					default:
+						$form.= '<input type="text" id="'.$c.'" name="'.$c.'" maxlength="'.$this->colLength[$c].'" placeholder="'.$placeholder.'"  />';
+					break;
+				}
+			} else {
+				$t = "";
+				if($c == "country_id") $t = "country";
+				else if($c == "language_id") $t = "language";
+				else if($c == "publication_type_id") $t = "series_publication_type";
+				else if($c == "type_id") $t = "story_type";
+				
+				$form .= getSelectComponent($this->db, $t);
+			}
+			
+			$form.= '</td></tr>';
+		}
+		echo $form;
 	}
 	
 	function insert($values) {

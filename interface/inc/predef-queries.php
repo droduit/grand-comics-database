@@ -21,9 +21,14 @@
 					// $q_a[1] : code sql de la query
 					?>
 					
-					<div class="query" array_idx="<?= ($i-1) ?>" key="<?= $k; ?>">
+					<div class="query <?= $q_a[1]=="" ? "red" : "green" ?>" array_idx="<?= ($i-1) ?>" key="<?= $k; ?>">
 						<div class="num">Query <?= $k ?></div>
 						<div class="desc"><?= $q_a[0] ?></div>
+						
+						
+						<input type="<?= (!($k == "o" && $i-1 == 2)) ? "hidden" : "text" ?>" name="parameter" placeholder="Parameter"  />
+						
+						
 						<div class="exec">Execute query</div>
 						<div class="res table-res" style="display:none"><div style="text-align: center; padding: 8px"><img align="center" src="img/loader.gif" /></div></div>
 					</div>
@@ -45,6 +50,8 @@ $(function(){
 		var parent = $(this).parent();
 		var a_idx = parent.attr("array_idx");
 		var k = parent.attr("key");
+		var p = parent.find('input[name=parameter]').val();
+	
 		
 		if(parent.attr("executed") == undefined) {
 			parent.find(".res").slideDown("fast");
@@ -52,7 +59,8 @@ $(function(){
 			var before = (new Date()).getTime();
 			$.post('inc/query.exec.php', {
 				key : k, 
-				array_idx : a_idx
+				array_idx : a_idx,
+				param : p
 			}, function(html) {
 				var after = (new Date()).getTime();
 				var diff = (after - before) / 1000;
@@ -78,6 +86,7 @@ $(function(){
 	border-right: none;
 	background: white;
 }
+.red { background: rgba(255, 0, 0, 0.4); }
 .query .exec {
 	background: #bb1300;
     padding: 6px 0;
@@ -103,6 +112,9 @@ $(function(){
 }
 .query .time {
 	color: #bb1300;
+}
+.query input {
+	margin-bottom: 10px ;
 }
 
 .query-txt {

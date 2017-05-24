@@ -21,7 +21,7 @@ $db = ($_SERVER['HTTP_HOST']=="localhost") ?
 
 		
 $csv = "comics/".$file."/".$_GET['chunk'];
-$table = "issue_orig"; //$file;
+$table = $file;
 $filename = $csv;
 $handle = fopen($filename, "r");
 
@@ -31,7 +31,7 @@ $rows = array();
 if($file == "story") {
 	$colToDiscard = array(2, 10, 11); //array(2, 4, 5, 6, 7, 8, 9, 10, 11);
 } else if($file == "series") {
-	$colToDiscard = array(3,4,5);	
+	$colToDiscard = array();	
 } else if($file == "issue") {
 	$colToDiscard = array(); //array(8);
 } else {

@@ -201,7 +201,11 @@ $q = array(
 		
 		'i' => array(
 			"Print the 10 brand groups with the highest number of indicia publishers. ",
-			""
+			"SELECT distinct b.name, COUNT(*) as nb FROM indicia_publisher i
+			LEFT JOIN brand_group b ON b.publisher_id = i.publisher_id
+			GROUP BY b.name
+			ORDER BY nb DESC
+			LIMIT 10"
 		),
 		
 		'j' => array(
@@ -219,7 +223,13 @@ $q = array(
 		
 		'k' => array(
 			"Print the top 10 indicia publishers that have published the most single-issue series. ",
-			""
+			"SELECT i.name, COUNT(*) as nb
+			FROM series s
+			LEFT JOIN indicia_publisher i ON s.publisher_id = i.publisher_id
+			WHERE s.first_issue_id = s.last_issue_id 	
+			GROUP BY i.name
+			ORDER BY nb DESC
+			LIMIT 10"
 		),
 		
 		'l' => array(
